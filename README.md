@@ -1,6 +1,6 @@
-# must-gather_gather_metrics-PromMCPServer_claudeDemo
+# must-gather_gather_metrics Prometheus MCPServer Claude demo
 
-This repo demonstrates extracting selected metrics from an Openshift cluster.
+This repo demonstrates extracting selected metrics from an Openshift cluster using `must-gather -- gather_metrics`
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
 Claude is then used to query the data via a Prometheus MCP server. 
 
@@ -17,19 +17,21 @@ Run the must-gather command within this repo or place a pre collected `must-gath
 
 
 Running the launcher will result in the collected data being available via a running container
-
 ```
 ./launcher.sh
 ```
 
-launch claude and configure the MCP server.
+Launch claude and list installed MCP servers
+```
+claude list installed MCP servers
+```
+
 Tell Claude that is its querying a Prometheus dump containing historical data:
 ```
 I see! The Prometheus server contains historical data from a promdump. Let me query with a proper timestamp. I'll calculate 1 hour ago:
 ```
 
 Now you can query the data using natural language:
-
 ```
 ● Great! Found the nodes with master role from 1 hour ago:
 
