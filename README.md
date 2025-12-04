@@ -2,7 +2,7 @@
 
 Prometheus MCPServer Claude demo
 
-This repo demonstrates exporting selected metrics from an Openshift cluster using `must-gather -- gather_metrics`
+This repo demonstrates exporting metrics from an Openshift cluster using `must-gather -- gather_metrics`
 
 
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
