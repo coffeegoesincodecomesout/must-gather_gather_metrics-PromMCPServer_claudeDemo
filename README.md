@@ -8,8 +8,7 @@ This repo demonstrates exporting metrics from an Openshift cluster using `must-g
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
 Claude is then used to query the data via a Prometheus MCP server. 
 
-`oc adm must-gather` can now collect metrics from a given cluster
-This feature is available from 4.18 + 
+`oc adm must-gather` can now collect metrics from a given cluster:
 
 ```
 oc adm must-gather -- gather_metrics \
