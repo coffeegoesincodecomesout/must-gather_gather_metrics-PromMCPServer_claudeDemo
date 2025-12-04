@@ -1,6 +1,7 @@
 # must-gather_gather_metrics 
 
-Prometheus MCPServer Claude demo - tested on Openshift 4.20
+Prometheus MCPServer Claude code demo - tested on Openshift 4.20
+Requires at claude code subscription!
 
 This repo demonstrates exporting metrics from an Openshift cluster using `must-gather -- gather_metrics`
 
