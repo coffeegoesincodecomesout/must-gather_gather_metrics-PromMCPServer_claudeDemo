@@ -19,7 +19,7 @@ if ! test -f firstrun.txt;
       echo                     
         if [[ $REPLY =~ ^[Yy]$ ]]
           then
-            claude mcp add prometheus --env PROMETHEUS_URL=http://localhost:9090 -- docker run -i --rm -e PROMETHEUS_URL ghcr.io/pab1it0/prometheus-mcp-server:latest  
+            claude mcp add prometheus --env PROMETHEUS_URL=http://localhost:9090 -- podman run -i --rm --network=host -e PROMETHEUS_URL ghcr.io/pab1it0/prometheus-mcp-server:latest
         fi
 
     #Get desired PROM_VERSION
@@ -36,11 +36,14 @@ source firstrun.txt
 echo $PROM_VERSION
 
 #Create configfiles
+echo "creating config files..." 
 mkdir -p tmp/prometheus-config
 touch tmp/prometheus-config/prometheus.yml
 
-#Create tsdb blocks from openmetrics 
+#Create tsdb blocks from openmetrics
+echo "creating TSDB block..."
 tmp/prometheus-$PROM_VERSION.linux-amd64/promtool tsdb create-blocks-from openmetrics must-gather.local.*/quay-io-openshift-*/monitoring/metrics/metrics.openmetrics tmp/prometheus-$PROM_VERSION.linux-amd64/data/
 
 #Launch the container
+echo "launching the Prometheus instance..."
 podman run --rm -p 9090:9090/tcp -v $PWD/tmp/prometheus-$PROM_VERSION.linux-amd64/data:/prometheus:U,Z --privileged quay.io/prometheus/prometheus --storage.tsdb.path=/prometheus --config.file=/dev/null
