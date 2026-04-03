@@ -1,7 +1,5 @@
 #!/bin/bash
 
-MODEL_API="https://claude--apicast-production.apps.int.stc.ai.prod.us-east-1.aws.paas.redhat.com:443"
-MODEL_ID="claude-sonnet-4@20250514"
 PROXY_PORT="8787"
 
 #Clean up
@@ -42,8 +40,20 @@ if ! test -f firstrun.txt;
       read -s USER_KEY
       echo
 
+    #Get MODEL_API endpoint
+      echo -n "Enter the MODEL_API endpoint URL [https://claude--apicast-production.apps.int.stc.ai.prod.us-east-1.aws.paas.redhat.com:443]: "
+      read MODEL_API
+      MODEL_API="${MODEL_API:-https://claude--apicast-production.apps.int.stc.ai.prod.us-east-1.aws.paas.redhat.com:443}"
+
+    #Get MODEL_ID
+      echo -n "Enter the MODEL_ID [claude-sonnet-4@20250514]: "
+      read MODEL_ID
+      MODEL_ID="${MODEL_ID:-claude-sonnet-4@20250514}"
+
       echo "PROM_VERSION=$PROM_VERSION" > firstrun.txt
       echo "USER_KEY=$USER_KEY" >> firstrun.txt
+      echo "MODEL_API=$MODEL_API" >> firstrun.txt
+      echo "MODEL_ID=$MODEL_ID" >> firstrun.txt
 
     #Download the desired PROM_VERSION
       curl -Ls https://github.com/prometheus/prometheus/releases/download/v$PROM_VERSION/prometheus-$PROM_VERSION.linux-amd64.tar.gz | tar -xvz -C tmp
