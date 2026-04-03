@@ -9,7 +9,7 @@ This repo demonstrates exporting metrics from an Openshift cluster using `must-g
 
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
 Claude is then used to query the data via a Prometheus MCP server. 
-A Perses instance is provide to host dashboards - you can ask claude to create dashboard within the perses instance.
+A Perses instance is provided to host dashboards - you can ask claude to create dashboards within the perses instance.
 
 `oc adm must-gather` can now collect metrics from a given cluster:
 
