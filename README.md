@@ -1,14 +1,11 @@
 # must-gather_gather_metrics 
 
 Prometheus MCPServer Claude code POC
-Requires a local claude code client install
-
-This branch demonstrates using Red Hat internal models.corp API to access Claude.
 
 This repo demonstrates exporting metrics from an Openshift cluster using `must-gather -- gather_metrics`
 
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
-Claude is then used to query the data via a Prometheus MCP server. 
+An Interally hosted Claude model is then used to query the data via a Prometheus MCP server. 
 A Perses instance is provided to host dashboards - you can ask claude to create dashboards within the perses instance.
 
 `oc adm must-gather` can now collect metrics from a given cluster:

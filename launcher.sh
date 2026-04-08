@@ -41,14 +41,12 @@ if ! test -f firstrun.txt;
       echo
 
     #Get MODEL_API endpoint
-      echo -n "Enter the MODEL_API endpoint URL [https://claude--apicast-production.apps.int.stc.ai.prod.us-east-1.aws.paas.redhat.com:443]: "
+      echo -n "Enter the MODEL_API endpoint URL: "
       read MODEL_API
-      MODEL_API="${MODEL_API:-https://claude--apicast-production.apps.int.stc.ai.prod.us-east-1.aws.paas.redhat.com:443}"
 
     #Get MODEL_ID
-      echo -n "Enter the MODEL_ID [claude-sonnet-4@20250514]: "
+      echo -n "Enter the MODEL_ID: "
       read MODEL_ID
-      MODEL_ID="${MODEL_ID:-claude-sonnet-4@20250514}"
 
       echo "PROM_VERSION=$PROM_VERSION" > firstrun.txt
       echo "USER_KEY=$USER_KEY" >> firstrun.txt
