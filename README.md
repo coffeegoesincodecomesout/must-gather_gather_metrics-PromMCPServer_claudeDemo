@@ -24,11 +24,6 @@ Running the launcher will result in the collected data being available via a run
 ./launcher.sh
 ```
 
-Tell Claude that is its querying a Prometheus dump containing historical data:
-```
-I see! The Prometheus server contains historical data from a promdump. Let me query with a proper timestamp. I'll calculate 1 hour ago:
-```
-
 Now you can query the data using natural language:
 ```
 ● Great! Found the nodes with master role from 1 hour ago:
@@ -39,5 +34,7 @@ Now you can query the data using natural language:
   2. sharedocp420-sxt45-master-1
   3. sharedocp420-sxt45-master-2
 ```
+
+A `CLAUDE.md` file is included in the repo root. Claude Code loads it automatically at session start, providing context about the historical nature of the data and the correct querying workflow — no manual priming required.
 
 This script touches the file `firstrun.txt` after its firstrun, this file contains your USER_KEY, MODEL_API and MODEL_ID
