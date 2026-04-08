@@ -21,7 +21,7 @@ if ! test -f firstrun.txt;
       echo
         if [[ $REPLY =~ ^[Yy]$ ]]
           then
-            claude mcp add prometheus --env PROMETHEUS_URL=http://localhost:9090 -- podman run -i --rm --network=host -e PROMETHEUS_URL ghcr.io/pab1it0/prometheus-mcp-server:latest
+            claude mcp add prometheus --env PROMETHEUS_MCP_SERVER_PROMETHEUS_URL=http://localhost:9090 -- podman run -i --rm --network=host -e PROMETHEUS_MCP_SERVER_PROMETHEUS_URL ghcr.io/tjhop/prometheus-mcp-server:latest
         fi
 
     #Try to get the Prometheus version from the dump
