@@ -1,33 +1,30 @@
 # must-gather_gather_metrics 
 
-Prometheus MCPServer Claude code demo - tested on Openshift 4.20
-Requires at claude code subscription!
+Prometheus MCPServer Claude code POC
+Requires a local claude code client install
+
+This branch demonstrates using Red Hat internal models.corp API to access Claude.
 
 This repo demonstrates exporting metrics from an Openshift cluster using `must-gather -- gather_metrics`
 
-
 The exported metrics are used to create TSDB blocks and expose that data via a containized prometheus instance.
 Claude is then used to query the data via a Prometheus MCP server. 
+A Perses instance is provided to host dashboards - you can ask claude to create dashboards within the perses instance.
 
 `oc adm must-gather` can now collect metrics from a given cluster:
 
 ```
 oc adm must-gather -- gather_metrics \
 --min-time=$(date --date='2 hours ago' +%s%3N) \
---match="{__name__=~\'kube_node_.*\'}"
+--match="{__name__=~\'etcd_.*\'}" \
+--match="ALERTS{alertname=~\'.*[Ee]tcd.*\'}" \
+--match="prometheus_build_info"
 ```
 
 Run the must-gather command within this repo or place a pre collected `must-gather -- gather_metrics` directory into the root of this repo.
-
-
 Running the launcher will result in the collected data being available via a running container
 ```
 ./launcher.sh
-```
-
-Launch claude and list installed MCP servers
-```
-claude list installed MCP servers
 ```
 
 Tell Claude that is its querying a Prometheus dump containing historical data:
@@ -46,4 +43,4 @@ Now you can query the data using natural language:
   3. sharedocp420-sxt45-master-2
 ```
 
-This script touches the file `firstrun.txt` after its firstrun. 
+This script touches the file `firstrun.txt` after its firstrun, this file contains your USER_KEY, MODEL_API and MODEL_ID

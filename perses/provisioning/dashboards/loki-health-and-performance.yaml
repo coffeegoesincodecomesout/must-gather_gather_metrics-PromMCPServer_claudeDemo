@@ -1,0 +1,247 @@
+kind: "Dashboard"
+metadata:
+  name: "loki-health-and-performance"
+  project: "default"
+spec:
+  display:
+    name: "Loki Health and Performance"
+    description: "Loki health and performance from must-gather data"
+  duration: "1h"
+  refreshInterval: "0s"
+  panels:
+    ring-members:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Ring Members by State"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "loki_ring_members"
+    memory-streams:
+      kind: "Panel"
+      spec:
+        display:
+          name: "In-Memory Streams"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "loki_ingester_memory_streams"
+    lines-received:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Lines Received (rate)"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "rate(loki_distributor_lines_received_total[5m])"
+    bytes-received:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Bytes Received (rate)"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "rate(loki_distributor_bytes_received_total[5m])"
+    memory-chunks:
+      kind: "Panel"
+      spec:
+        display:
+          name: "In-Memory Chunks"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "loki_ingester_memory_chunks"
+    chunk-flush-p99:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Chunk Flush Latency p99 (seconds)"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "histogram_quantile(0.99, rate(loki_ingester_chunk_flush_duration_seconds_bucket[5m]))"
+    request-duration-p99:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Request Duration p99 (seconds)"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "histogram_quantile(0.99, rate(loki_request_duration_seconds_bucket[5m]))"
+    request-errors:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Request Errors (rate)"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "rate(loki_request_duration_seconds_count{status_code=~'5..'}[5m])"
+    firing-alerts:
+      kind: "Panel"
+      spec:
+        display:
+          name: "Firing Alerts"
+        plugin:
+          kind: "TimeSeriesChart"
+          spec:
+            legend:
+              position: "bottom"
+        queries:
+          - kind: "TimeSeriesQuery"
+            spec:
+              plugin:
+                kind: "PrometheusTimeSeriesQuery"
+                spec:
+                  query: "ALERTS{alertname=~'.*[Ll]oki.*', alertstate='firing'}"
+  layouts:
+    - kind: "Grid"
+      spec:
+        display:
+          title: "Health"
+          collapse:
+            open: true
+        items:
+          - x: 0
+            y: 0
+            width: 12
+            height: 8
+            content:
+              $ref: "#/spec/panels/ring-members"
+          - x: 12
+            y: 0
+            width: 12
+            height: 8
+            content:
+              $ref: "#/spec/panels/memory-streams"
+    - kind: "Grid"
+      spec:
+        display:
+          title: "Ingestion"
+          collapse:
+            open: true
+        items:
+          - x: 0
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/lines-received"
+          - x: 8
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/bytes-received"
+          - x: 16
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/memory-chunks"
+    - kind: "Grid"
+      spec:
+        display:
+          title: "Query Performance"
+          collapse:
+            open: true
+        items:
+          - x: 0
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/chunk-flush-p99"
+          - x: 8
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/request-duration-p99"
+          - x: 16
+            y: 0
+            width: 8
+            height: 8
+            content:
+              $ref: "#/spec/panels/request-errors"
+    - kind: "Grid"
+      spec:
+        display:
+          title: "Alerts"
+          collapse:
+            open: true
+        items:
+          - x: 0
+            y: 0
+            width: 24
+            height: 8
+            content:
+              $ref: "#/spec/panels/firing-alerts"
