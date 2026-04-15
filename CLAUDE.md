@@ -11,7 +11,7 @@ This session is connected to a **historical Prometheus dataset**, not a live clu
 Follow this sequence for every investigation:
 
 1. **Check health** — call `health_check` to confirm the Prometheus instance is reachable.
-2. **Discover the time range** — run an instant query for `prometheus_build_info` with a timestamp of `1` (Unix epoch) to force a range query fallback, or use `execute_range_query` with a wide range (e.g. start=0, end=now, step=1h) to find where data actually exists.
+2. **Discover the time range** — use `execute_range_query` with a 30-day lookback (e.g. start=now-30d, end=now, step=1h) to find where data actually exists. Must-gather dumps are typically collected within the last 7–14 days.
 3. **List metrics** — call `list_metrics` before querying anything. Never assume a metric name exists; always verify.
 4. **Get metadata** — use `get_metric_metadata` to understand labels and dimensions before filtering.
 5. **Query with correct timestamps** — use timestamps from within the discovered data window. Prefer `execute_range_query` over instant queries for historical data exploration.
